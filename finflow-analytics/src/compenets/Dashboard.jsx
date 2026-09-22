@@ -24,18 +24,6 @@ function Dashboad() {
           <p>0</p>
         </div>
       </section>
-
-      <section>
-        <div>
-          <h3>Monthly Cash Flow</h3>
-          <p>Placeholder chart area</p>
-        </div>
-
-        <div>
-          <h3>Spending by Category</h3>
-          <p>Placeholder chart area</p>
-        </div>
-      </section>
     </div>
   )
 }
