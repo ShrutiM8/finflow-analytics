@@ -4,12 +4,12 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
 import Dashboad from './components/Dashboard'
-import Navigation from './components/Navigation'
+import Navbar from './components/Navbar'
 function App() {
 
   return (
    <div>
-    <Navigation/>
+    <Navbar/>
     <Dashboad/>
    </div> 
   );
