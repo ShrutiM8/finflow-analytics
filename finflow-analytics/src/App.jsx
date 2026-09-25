@@ -5,13 +5,16 @@ import viteLogo from './assets/vite.svg'
 import './App.css'
 import Dashboad from './components/Dashboard'
 import Navbar from './components/Navbar'
+import { AppProvider } from './components/AppContext'
 function App() {
 
   return (
-   <div>
-    <Navbar/>
-    <Dashboad/>
-   </div> 
+   <AppProvider>
+    <div>
+      <Navbar/>
+      <Dashboad/>
+    </div>
+   </AppProvider>
   );
   
 }
