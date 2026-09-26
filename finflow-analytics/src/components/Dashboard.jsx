@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "./AppContext";
 
 function Dashboard() {
+  const { transactions } = useContext(AppContext);
+
   return (
     <div className="dashboard">
 
@@ -43,7 +46,7 @@ function Dashboard() {
             <span className="summary-icon transactions">#</span>
           </div>
 
-          <h2>0</h2>
+          <h2>{transactions.length}</h2>
           <p>All time</p>
         </div>
 
