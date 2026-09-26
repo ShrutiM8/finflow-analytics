@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 function Navbar() {
+  const [role, setRole] = useState("admin");
+
   return (
     <nav className="navbar">
       <div className="nav-brand">
@@ -12,12 +14,12 @@ function Navbar() {
       </div>
 
       <div className="nav-tabs">
-        <button className="nav-tab active">
+        <a className="nav-tab" href="#dashboard">
           <span>▦</span>
           <span>Dashboard</span>
-        </button>
+        </a>
 
-        <button className="nav-tab">
+        <button className="nav-tab active">
           <span>☷</span>
           <span>Transactions</span>
         </button>
@@ -29,12 +31,18 @@ function Navbar() {
       </div>
 
       <div className="nav-right">
-        <select className="role-select" defaultValue="admin">
+        <select
+          className="role-select"
+          value={role}
+          onChange={(event) => setRole(event.target.value)}
+        >
           <option value="admin">👤 Admin</option>
           <option value="viewer">👁 Viewer</option>
         </select>
 
-        <span className="role-badge admin">Admin</span>
+        <span className={`role-badge ${role}`}>
+          {role === "admin" ? "Admin" : "Viewer"}
+        </span>
       </div>
     </nav>
   );

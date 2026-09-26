@@ -3,17 +3,20 @@
 ========================= */
 
 .navbar {
-  width: 100%;
-  min-height: 72px;
-  padding: 0 24px;
-
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  position: sticky;
+  top: 0;
+  z-index: 50;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-
-  background: #1e293b;
+  height: 60px;
+  gap: 16px;
+  padding: 0 24px;
+  box-sizing: border-box;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #1e293b;
 }
 
 .nav-brand {
@@ -53,25 +56,42 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .nav-tab {
   border: none;
   background: transparent;
+  box-sizing: border-box;
 
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 6px;
 
-  padding: 9px 14px;
-  border-radius: 8px;
+  height: 35px;
+  line-height: 20px;
+  padding: 7px 14px;
+  border-radius: 7px;
 
   color: #94a3b8;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s;
 }
 
-.nav-tab:hover,
 .nav-tab.active {
+  padding: 7px 14px;
+  background: rgba(52, 211, 153, 0.12);
+  color: #34d399;
+}
+
+.nav-tab:hover:not(.active) {
   background: #273549;
   color: #f1f5f9;
 }
@@ -83,19 +103,21 @@
 }
 
 .role-select {
-  padding: 8px 10px;
+  padding: 6px 10px;
 
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 7px;
 
   background: #273549;
   color: #f1f5f9;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
 
   cursor: pointer;
 }
 
 .role-badge {
-  padding: 5px 9px;
+  padding: 4px 10px;
   border-radius: 20px;
 
   font-size: 12px;
@@ -103,8 +125,13 @@
 }
 
 .role-badge.admin {
-  background: rgba(52, 211, 153, 0.12);
-  color: #34d399;
+  background: rgba(167, 139, 250, 0.15);
+  color: #a78bfa;
+}
+
+.navbar .role-badge.viewer {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
 }
 
 

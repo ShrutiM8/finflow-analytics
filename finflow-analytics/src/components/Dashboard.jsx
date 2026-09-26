@@ -5,7 +5,7 @@ function Dashboard() {
   const { balance, income, expenses, transactions } = useContext(AppContext);
 
   return (
-    <div className="dashboard">
+    <div className="dashboard" id="dashboard">
 
       {/* Summary Cards */}
       <section className="summary-grid">
