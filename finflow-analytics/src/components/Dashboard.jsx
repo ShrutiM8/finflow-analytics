@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { AppContext } from "./AppContext";
 
 function Dashboard() {
-  const { transactions } = useContext(AppContext);
+  const { balance, income, expenses, transactions } = useContext(AppContext);
 
   return (
     <div className="dashboard">
@@ -16,7 +16,7 @@ function Dashboard() {
             <span className="summary-icon balance">=</span>
           </div>
 
-          <h2>₹0</h2>
+          <h2>₹{balance}</h2>
           <p>0% savings rate</p>
         </div>
 
@@ -26,7 +26,7 @@ function Dashboard() {
             <span className="summary-icon income">+</span>
           </div>
 
-          <h2>₹0</h2>
+          <h2>₹{income}</h2>
           <p>0 entries</p>
         </div>
 
@@ -36,7 +36,7 @@ function Dashboard() {
             <span className="summary-icon expense">−</span>
           </div>
 
-          <h2>₹0</h2>
+          <h2>₹{expenses}</h2>
           <p>0 entries</p>
         </div>
 
