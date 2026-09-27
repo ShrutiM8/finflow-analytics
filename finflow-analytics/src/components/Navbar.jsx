@@ -1,43 +1,68 @@
 import React, { useState } from "react";
+import {
+  ArrowLeftRight,
+  ChartNoAxesCombined,
+  LayoutDashboard,
+  Menu,
+  UserRound,
+  X,
+} from "lucide-react";
 
 function Navbar() {
   const [role, setRole] = useState("admin");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <nav className="navbar">
       <div className="nav-brand">
-        <div className="brand-icon">₹</div>
+        <div className="brand-icon">
+          <span aria-hidden="true">₹</span>
+        </div>
         <div>
           <h2>FinFlow</h2>
-          <span>Finance Dashboard</span>
+          <span>Analytics</span>
         </div>
       </div>
 
-      <div className="nav-tabs">
+      <div
+        className={`nav-tabs${isMenuOpen ? " is-open" : ""}`}
+        id="mobile-navigation"
+      >
         <a className="nav-tab" href="#dashboard">
-          <span>▦</span>
+          <LayoutDashboard size={16} aria-hidden="true" />
           <span>Dashboard</span>
         </a>
 
-        <button className="nav-tab active">
-          <span>☷</span>
+        <button className="nav-tab">
+          <ArrowLeftRight size={16} aria-hidden="true" />
           <span>Transactions</span>
         </button>
 
-        <button className="nav-tab">
-          <span>◉</span>
+        <button className="nav-tab active">
+          <ChartNoAxesCombined size={16} aria-hidden="true" />
           <span>Insights</span>
         </button>
       </div>
 
       <div className="nav-right">
+        <button
+          className="nav-toggle"
+          type="button"
+          aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-navigation"
+          onClick={() => setIsMenuOpen((open) => !open)}
+        >
+          {isMenuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
+        </button>
+        <UserRound className="role-user-icon" size={16} aria-hidden="true" />
         <select
           className="role-select"
           value={role}
           onChange={(event) => setRole(event.target.value)}
         >
-          <option value="admin">👤 Admin</option>
-          <option value="viewer">👁 Viewer</option>
+          <option value="admin">Admin</option>
+          <option value="viewer">Viewer</option>
         </select>
 
         <span className={`role-badge ${role}`}>
