@@ -34,11 +34,13 @@ export function AppProvider({ children }) {
 		.filter((transaction) => transaction.type === 'expense')
 		.reduce((total, transaction) => total + transaction.amount, 0)
 	const balance = income - expenses
+	const savingsRate = income === 0 ? 0 : ((income - expenses) / income) * 100
 
 	const dashboardData = {
 		balance,
 		income,
 		expenses,
+		savingsRate,
 		transactions,
 	}
 

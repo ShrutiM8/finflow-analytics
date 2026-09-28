@@ -3,6 +3,13 @@ import { AppContext } from "./AppContext";
 
 function Dashboard() {
   const { balance, income, expenses, transactions } = useContext(AppContext);
+  const savingsRate = income === 0 ? 0 : Math.round((balance / income) * 100);
+  const incomeTransactionCount = transactions.filter(
+    (transaction) => transaction.type === "income"
+  ).length;
+  const expenseTransactionCount = transactions.filter(
+    (transaction) => transaction.type === "expense"
+  ).length;
 
   return (
     <div className="dashboard" id="dashboard">
@@ -10,37 +17,37 @@ function Dashboard() {
       {/* Summary Cards */}
       <section className="summary-grid">
 
-        <div className="summary-card">
+        <div className="summary-card summary-card-balance">
           <div className="summary-top">
             <span className="summary-label">Balance</span>
             <span className="summary-icon balance">=</span>
           </div>
 
           <h2>₹{balance}</h2>
-          <p>0% savings rate</p>
+          <p>{savingsRate}% savings rate</p>
         </div>
 
-        <div className="summary-card">
+        <div className="summary-card summary-card-income">
           <div className="summary-top">
             <span className="summary-label">Income</span>
             <span className="summary-icon income">+</span>
           </div>
 
           <h2>₹{income}</h2>
-          <p>0 entries</p>
+          <p>{incomeTransactionCount} entries</p>
         </div>
 
-        <div className="summary-card">
+        <div className="summary-card summary-card-expenses">
           <div className="summary-top">
             <span className="summary-label">Expenses</span>
             <span className="summary-icon expense">−</span>
           </div>
 
           <h2>₹{expenses}</h2>
-          <p>0 entries</p>
+          <p>{expenseTransactionCount} entries</p>
         </div>
 
-        <div className="summary-card">
+        <div className="summary-card summary-card-transactions">
           <div className="summary-top">
             <span className="summary-label">Transactions</span>
             <span className="summary-icon transactions">#</span>

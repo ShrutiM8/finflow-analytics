@@ -150,6 +150,9 @@
 
 .dashboard {
   width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0 24px;
 }
 
 
@@ -159,17 +162,37 @@
 
 .summary-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   margin-bottom: 20px;
+  min-width: 0;
 }
 
 .summary-card {
+  min-width: 0;
+  box-sizing: border-box;
   padding: 20px;
 
   background: #1e293b;
   border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top-width: 3px;
   border-radius: 12px;
+}
+
+.summary-card-balance {
+  border-top-color: #a78bfa;
+}
+
+.summary-card-income {
+  border-top-color: #34d399;
+}
+
+.summary-card-expenses {
+  border-top-color: #f87171;
+}
+
+.summary-card-transactions {
+  border-top-color: #fbbf24;
 }
 
 .summary-top {
@@ -236,11 +259,14 @@
 
 .charts-row {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
   gap: 20px;
+  min-width: 0;
 }
 
 .dashboard-card {
+  min-width: 0;
+  box-sizing: border-box;
   min-height: 320px;
   padding: 20px;
 
@@ -275,6 +301,8 @@
 ========================= */
 
 .chart-placeholder {
+  box-sizing: border-box;
+  min-width: 0;
   height: 235px;
 
   display: flex;
@@ -318,6 +346,7 @@
 
 .pie-placeholder {
   min-height: 235px;
+  min-width: 0;
 
   display: flex;
   align-items: center;
@@ -385,7 +414,7 @@
 
 @media (max-width: 900px) {
   .summary-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .charts-row {
@@ -522,10 +551,32 @@
   }
 
   .summary-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .summary-card,
+  .dashboard-card {
+    padding: 16px;
+  }
+
+  .card-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .chart-placeholder {
+    padding: 12px;
   }
 
   .pie-placeholder {
     flex-direction: column;
+    gap: 20px;
+  }
+
+  .pie-circle {
+    width: min(150px, 45vw);
+    height: auto;
+    aspect-ratio: 1;
+    box-sizing: border-box;
   }
 }
