@@ -1,23 +1,22 @@
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import './App.css'
 import './components/component.scss'
 import Dashboad from './components/Dashboard'
 import Navbar from './components/Navbar'
+import Transactions from './components/Transactions'
 import { AppProvider } from './components/AppContext'
+
 function App() {
+  const [activeTab, setActiveTab] = useState('dashboard')
 
   return (
-   <AppProvider>
-    <div>
-      <Navbar/>
-      <Dashboad/>
-    </div>
-   </AppProvider>
-  );
-  
+    <AppProvider>
+      <div>
+        <Navbar activeTab={activeTab} onSelectTab={setActiveTab} />
+        {activeTab === 'transactions' ? <Transactions /> : <Dashboad />}
+      </div>
+    </AppProvider>
+  )
 }
 
 export default App

@@ -10,6 +10,7 @@ export function AppProvider({ children }) {
 			category: 'Income',
 			type: 'income',
 			amount: 50000,
+			date: '2024-01-01',
 		},
 		{
 			id: 2,
@@ -17,6 +18,7 @@ export function AppProvider({ children }) {
 			category: 'Income',
 			type: 'income',
 			amount: 12000,
+			date: '2024-02-15',
 		},
 		{
 			id: 3,
@@ -24,6 +26,7 @@ export function AppProvider({ children }) {
 			category: 'Food',
 			type: 'expense',
 			amount: 2500,
+			date: '2024-01-07',
 		},
 		{
 			id: 4,
@@ -31,6 +34,7 @@ export function AppProvider({ children }) {
 			category: 'Housing',
 			type: 'expense',
 			amount: 18000,
+			date: '2024-02-01',
 		},
 		{
 			id: 5,
@@ -38,6 +42,7 @@ export function AppProvider({ children }) {
 			category: 'Transport',
 			type: 'expense',
 			amount: 500,
+			date: '2024-01-18',
 		},
 		{
 			id: 6,
@@ -45,6 +50,7 @@ export function AppProvider({ children }) {
 			category: 'Food',
 			type: 'expense',
 			amount: 1800,
+			date: '2024-03-10',
 		},
 		{
 			id: 7,
@@ -52,6 +58,7 @@ export function AppProvider({ children }) {
 			category: 'Entertainment',
 			type: 'expense',
 			amount: 950,
+			date: '2024-03-22',
 		},
 		{
 			id: 8,
@@ -59,6 +66,7 @@ export function AppProvider({ children }) {
 			category: 'Income',
 			type: 'income',
 			amount: 8000,
+			date: '2024-04-05',
 		},
 		{
 			id: 9,
@@ -66,6 +74,7 @@ export function AppProvider({ children }) {
 			category: 'Utilities',
 			type: 'expense',
 			amount: 2200,
+			date: '2024-03-28',
 		},
 		{
 			id: 10,
@@ -73,6 +82,7 @@ export function AppProvider({ children }) {
 			category: 'Shopping',
 			type: 'expense',
 			amount: 3600,
+			date: '2024-04-12',
 		},
 	]
 

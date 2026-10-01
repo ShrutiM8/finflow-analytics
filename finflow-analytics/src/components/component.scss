@@ -480,6 +480,135 @@
 
 
 /* =========================
+   TRANSACTIONS TABLE
+========================= */
+
+.transactions-table-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  flex: 1;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 24px;
+  overflow-x: auto;
+}
+
+.transactions-card {
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.transactions-header {
+  padding: 18px 20px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.transactions-header h3 {
+  margin: 0;
+  color: #f1f5f9;
+  font-size: 18px;
+}
+
+.transactions-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  background: #1e293b;
+  font-size: 13px;
+}
+
+.transactions-table th,
+.transactions-table td {
+  padding: 11px 14px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.transactions-table th {
+  background: transparent;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: left;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.transactions-table td {
+  color: #f1f5f9;
+  font-size: 13px;
+}
+
+.transactions-table .transaction-date {
+  font-size: 12px;
+}
+
+.transactions-table .transaction-description,
+.transactions-table .transaction-amount {
+  font-size: 13px;
+}
+
+.transactions-table tbody tr:hover {
+  background: rgba(39, 53, 73, 0.7);
+}
+
+.transactions-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.transaction-type {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 9px;
+  border-radius: 20px;
+  text-transform: capitalize;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.transaction-category {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.transaction-type.income {
+  background: rgba(52, 211, 153, 0.12);
+  color: #34d399;
+}
+
+.transaction-type.expense {
+  background: rgba(248, 113, 113, 0.12);
+  color: #f87171;
+}
+
+.transaction-amount {
+  text-align: right;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.transaction-amount.income {
+  color: #34d399;
+}
+
+.transaction-amount.expense {
+  color: #f87171;
+}
+
+
+/* =========================
    RESPONSIVE
 ========================= */
 

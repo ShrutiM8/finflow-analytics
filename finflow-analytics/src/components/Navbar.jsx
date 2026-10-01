@@ -8,7 +8,7 @@ import {
   X,
 } from "lucide-react";
 
-function Navbar() {
+function Navbar({ activeTab, onSelectTab }) {
   const [role, setRole] = useState("admin");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -28,17 +28,29 @@ function Navbar() {
         className={`nav-tabs${isMenuOpen ? " is-open" : ""}`}
         id="mobile-navigation"
       >
-        <a className="nav-tab" href="#dashboard">
+        <button
+          type="button"
+          className={`nav-tab${activeTab === "dashboard" ? " active" : ""}`}
+          onClick={() => onSelectTab("dashboard")}
+        >
           <LayoutDashboard size={16} aria-hidden="true" />
           <span>Dashboard</span>
-        </a>
+        </button>
 
-        <button className="nav-tab">
+        <button
+          type="button"
+          className={`nav-tab${activeTab === "transactions" ? " active" : ""}`}
+          onClick={() => onSelectTab("transactions")}
+        >
           <ArrowLeftRight size={16} aria-hidden="true" />
           <span>Transactions</span>
         </button>
 
-        <button className="nav-tab active">
+        <button
+          type="button"
+          className={`nav-tab${activeTab === "insights" ? " active" : ""}`}
+          onClick={() => onSelectTab("insights")}
+        >
           <ChartNoAxesCombined size={16} aria-hidden="true" />
           <span>Insights</span>
         </button>
