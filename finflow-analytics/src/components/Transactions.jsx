@@ -1,4 +1,5 @@
 import React, { useContext, useMemo, useState } from 'react';
+import { Pencil, Trash2 } from 'lucide-react';
 import { AppContext } from './AppContext';
 
 const CATEGORY_COLORS = {
@@ -16,11 +17,18 @@ const CATEGORY_COLORS = {
   Other: '#94a3b8',
 };
 
-function Transactions() {
-  const { transactions } = useContext(AppContext);
+function Transactions({ role }) {
+  const { transactions, updateTransaction } = useContext(AppContext);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedType, setSelectedType] = useState('all');
+  const [editingTransaction, setEditingTransaction] = useState(null);
+  const [editForm, setEditForm] = useState({
+    description: '',
+    category: '',
+    amount: '',
+    type: 'expense',
+  });
 
   const categories = [...new Set(transactions.map((transaction) => transaction.category))]
     .sort((left, right) => left.localeCompare(right));
@@ -42,6 +50,32 @@ function Transactions() {
       return matchesSearch && matchesCategory && matchesType;
     });
   }, [transactions, searchQuery, selectedCategory, selectedType]);
+
+  const openEditForm = (transaction) => {
+    setEditingTransaction(transaction);
+    setEditForm({
+      description: transaction.description,
+      category: transaction.category,
+      amount: String(transaction.amount),
+      type: transaction.type,
+    });
+  };
+
+  const saveTransaction = (event) => {
+    event.preventDefault();
+    if (!editingTransaction || !editForm.description.trim() || !editForm.category.trim()) return;
+
+    const amount = Number(editForm.amount);
+    if (!Number.isFinite(amount) || amount < 0) return;
+
+    updateTransaction(editingTransaction.id, {
+      description: editForm.description.trim(),
+      category: editForm.category.trim(),
+      amount,
+      type: editForm.type,
+    });
+    setEditingTransaction(null);
+  };
 
   return (
     <div className="transactions-table-wrapper tx-page">
@@ -104,6 +138,7 @@ function Transactions() {
               <th>Category</th>
               <th>Type</th>
               <th>Amount</th>
+              {role === 'admin' && <th>Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -133,16 +168,93 @@ function Transactions() {
                 <td className={`transaction-amount ${transaction.type}`}>
                   {transaction.type === 'income' ? '+' : '-'}₹{transaction.amount}
                 </td>
+                {role === 'admin' && (
+                  <td className="transaction-actions">
+                    <button
+                      type="button"
+                      className="transaction-action edit"
+                      aria-label={`Edit ${transaction.description}`}
+                      onClick={() => openEditForm(transaction)}
+                    >
+                      <Pencil size={14} aria-hidden="true" />
+                      <span>Edit</span>
+                    </button>
+                    <button type="button" className="transaction-action delete" aria-label={`Delete ${transaction.description}`}>
+                      <Trash2 size={14} aria-hidden="true" />
+                      <span>Del</span>
+                    </button>
+                  </td>
+                )}
               </tr>
               );
             }) : (
               <tr>
-                <td className="transactions-empty" colSpan="5">No transactions found</td>
+                <td className="transactions-empty" colSpan={role === 'admin' ? 6 : 5}>
+                  No transactions found
+                </td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
+
+      {editingTransaction && (
+        <div className="transaction-modal-backdrop" onClick={() => setEditingTransaction(null)}>
+          <form
+            className="transaction-edit-form"
+            onSubmit={saveTransaction}
+            onClick={(event) => event.stopPropagation()}
+            aria-label="Edit transaction"
+          >
+            <h3>Edit Transaction</h3>
+            <label>
+              Description
+              <input
+                type="text"
+                value={editForm.description}
+                onChange={(event) => setEditForm({ ...editForm, description: event.target.value })}
+                required
+              />
+            </label>
+            <label>
+              Category
+              <input
+                type="text"
+                value={editForm.category}
+                onChange={(event) => setEditForm({ ...editForm, category: event.target.value })}
+                required
+              />
+            </label>
+            <label>
+              Amount
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={editForm.amount}
+                onChange={(event) => setEditForm({ ...editForm, amount: event.target.value })}
+                required
+              />
+            </label>
+            <label>
+              Type
+              <select
+                value={editForm.type}
+                onChange={(event) => setEditForm({ ...editForm, type: event.target.value })}
+              >
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+              </select>
+            </label>
+            <div className="transaction-edit-actions">
+              <button type="button" className="filter-clear" onClick={() => setEditingTransaction(null)}>
+                Cancel
+              </button>
+              <button type="submit" className="transaction-action edit">Save changes</button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 }

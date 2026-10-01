@@ -8,12 +8,18 @@ import { AppProvider } from './components/AppContext'
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard')
+  const [role, setRole] = useState('admin')
 
   return (
     <AppProvider>
       <div>
-        <Navbar activeTab={activeTab} onSelectTab={setActiveTab} />
-        {activeTab === 'transactions' ? <Transactions /> : <Dashboad />}
+        <Navbar
+          activeTab={activeTab}
+          onSelectTab={setActiveTab}
+          role={role}
+          onRoleChange={setRole}
+        />
+        {activeTab === 'transactions' ? <Transactions role={role} /> : <Dashboad />}
       </div>
     </AppProvider>
   )

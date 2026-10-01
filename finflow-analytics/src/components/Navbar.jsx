@@ -8,8 +8,7 @@ import {
   X,
 } from "lucide-react";
 
-function Navbar({ activeTab, onSelectTab }) {
-  const [role, setRole] = useState("admin");
+function Navbar({ activeTab, onSelectTab, role, onRoleChange }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -71,7 +70,7 @@ function Navbar({ activeTab, onSelectTab }) {
         <select
           className="role-select"
           value={role}
-          onChange={(event) => setRole(event.target.value)}
+          onChange={(event) => onRoleChange(event.target.value)}
         >
           <option value="admin">Admin</option>
           <option value="viewer">Viewer</option>

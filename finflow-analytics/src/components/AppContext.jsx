@@ -1,9 +1,9 @@
-import { createContext } from 'react'
+import { createContext, useState } from 'react'
 
 export const AppContext = createContext(null)
 
 export function AppProvider({ children }) {
-	const transactions = [
+	const [transactions, setTransactions] = useState([
 		{
 			id: 1,
 			description: 'Monthly salary',
@@ -84,7 +84,17 @@ export function AppProvider({ children }) {
 			amount: 3600,
 			date: '2024-04-12',
 		},
-	]
+	])
+
+	const updateTransaction = (transactionId, updates) => {
+		setTransactions((currentTransactions) =>
+			currentTransactions.map((transaction) =>
+				transaction.id === transactionId
+					? { ...transaction, ...updates }
+					: transaction
+			)
+		)
+	}
 
 	const income = transactions
 		.filter((transaction) => transaction.type === 'income')
@@ -101,6 +111,7 @@ export function AppProvider({ children }) {
 		expenses,
 		savingsRate,
 		transactions,
+		updateTransaction,
 	}
 
 	return (
