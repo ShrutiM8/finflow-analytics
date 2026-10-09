@@ -18,7 +18,7 @@ const CATEGORY_COLORS = {
 };
 
 function Transactions({ role }) {
-  const { transactions, updateTransaction } = useContext(AppContext);
+  const { transactions, updateTransaction, deleteTransaction } = useContext(AppContext);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedType, setSelectedType] = useState('all');
@@ -27,8 +27,41 @@ function Transactions({ role }) {
     description: '',
     category: '',
     amount: '',
-    type: 'expense',
+    type: 'income',
+    date: '',
   });
+
+  const formatDateForDisplay = (value) => {
+    if (!value) return '';
+
+    const dateParts = String(value).split('-');
+    if (dateParts.length !== 3) return value;
+
+    const [year, month, day] = dateParts;
+    return `${day}-${month}-${year}`;
+  };
+
+  const normalizeDateInput = (value) => {
+    if (!value) return '';
+
+    const cleanedValue = String(value).trim();
+    if (cleanedValue.includes('-')) {
+      const [year, month, day] = cleanedValue.split('-');
+      if (year && month && day) {
+        return `${year}-${month}-${day}`;
+      }
+    }
+
+    const digits = cleanedValue.replace(/\D/g, '');
+    if (digits.length === 8) {
+      const day = digits.slice(0, 2);
+      const month = digits.slice(2, 4);
+      const year = digits.slice(4, 8);
+      return `${year}-${month}-${day}`;
+    }
+
+    return cleanedValue;
+  };
 
   const categories = [...new Set(transactions.map((transaction) => transaction.category))]
     .sort((left, right) => left.localeCompare(right));
@@ -58,6 +91,7 @@ function Transactions({ role }) {
       category: transaction.category,
       amount: String(transaction.amount),
       type: transaction.type,
+      date: transaction.date,
     });
   };
 
@@ -66,13 +100,15 @@ function Transactions({ role }) {
     if (!editingTransaction || !editForm.description.trim() || !editForm.category.trim()) return;
 
     const amount = Number(editForm.amount);
-    if (!Number.isFinite(amount) || amount < 0) return;
+    const normalizedDate = normalizeDateInput(editForm.date);
+    if (!Number.isFinite(amount) || amount < 0 || !normalizedDate) return;
 
     updateTransaction(editingTransaction.id, {
       description: editForm.description.trim(),
       category: editForm.category.trim(),
       amount,
       type: editForm.type,
+      date: normalizedDate,
     });
     setEditingTransaction(null);
   };
@@ -130,6 +166,7 @@ function Transactions({ role }) {
           </span>
         </div>
 
+        <div className="transactions-table-scroll" role="region" aria-label="Transactions table" tabIndex="0">
         <table className="transactions-table">
           <thead>
             <tr>
@@ -179,7 +216,12 @@ function Transactions({ role }) {
                       <Pencil size={14} aria-hidden="true" />
                       <span>Edit</span>
                     </button>
-                    <button type="button" className="transaction-action delete" aria-label={`Delete ${transaction.description}`}>
+                    <button
+                      type="button"
+                      className="transaction-action delete"
+                      aria-label={`Delete ${transaction.description}`}
+                      onClick={() => deleteTransaction(transaction.id)}
+                    >
                       <Trash2 size={14} aria-hidden="true" />
                       <span>Del</span>
                     </button>
@@ -196,6 +238,7 @@ function Transactions({ role }) {
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       {editingTransaction && (
@@ -206,9 +249,37 @@ function Transactions({ role }) {
             onClick={(event) => event.stopPropagation()}
             aria-label="Edit transaction"
           >
-            <h3>Edit Transaction</h3>
-            <label>
-              Description
+            <div className="transaction-edit-header">
+              <h3>Edit Transaction</h3>
+              <button
+                type="button"
+                className="transaction-close-button"
+                aria-label="Close transaction editor"
+                onClick={() => setEditingTransaction(null)}
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="transaction-type-toggle" role="tablist" aria-label="Transaction type">
+              <button
+                type="button"
+                className={`expense${editForm.type === 'expense' ? ' is-active' : ''}`}
+                onClick={() => setEditForm({ ...editForm, type: 'expense' })}
+              >
+                Expense
+              </button>
+              <button
+                type="button"
+                className={`income${editForm.type === 'income' ? ' is-active' : ''}`}
+                onClick={() => setEditForm({ ...editForm, type: 'income' })}
+              >
+                Income
+              </button>
+            </div>
+
+            <label className="transaction-field">
+              <span>DESCRIPTION</span>
               <input
                 type="text"
                 value={editForm.description}
@@ -216,41 +287,54 @@ function Transactions({ role }) {
                 required
               />
             </label>
-            <label>
-              Category
-              <input
-                type="text"
+
+            <div className="transaction-inline-row">
+              <label className="transaction-field">
+                <span>AMOUNT (RS.)</span>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={editForm.amount}
+                  onChange={(event) => setEditForm({ ...editForm, amount: event.target.value })}
+                  required
+                />
+              </label>
+
+              <label className="transaction-field">
+                <span>DATE</span>
+                <div className="transaction-date-input-wrap">
+                  <input
+                    type="text"
+                    value={formatDateForDisplay(editForm.date)}
+                    onChange={(event) => setEditForm({ ...editForm, date: normalizeDateInput(event.target.value) })}
+                    placeholder="dd-mm-yyyy"
+                    required
+                  />
+                  <span className="transaction-date-icon" aria-hidden="true">🗓</span>
+                </div>
+              </label>
+            </div>
+
+            <label className="transaction-field">
+              <span>CATEGORY</span>
+              <select
                 value={editForm.category}
                 onChange={(event) => setEditForm({ ...editForm, category: event.target.value })}
-                required
-              />
-            </label>
-            <label>
-              Amount
-              <input
-                type="number"
-                min="0"
-                step="0.01"
-                value={editForm.amount}
-                onChange={(event) => setEditForm({ ...editForm, amount: event.target.value })}
-                required
-              />
-            </label>
-            <label>
-              Type
-              <select
-                value={editForm.type}
-                onChange={(event) => setEditForm({ ...editForm, type: event.target.value })}
               >
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>{category}</option>
+                ))}
               </select>
             </label>
+
             <div className="transaction-edit-actions">
-              <button type="button" className="filter-clear" onClick={() => setEditingTransaction(null)}>
+              <button type="button" className="transaction-cancel-button" onClick={() => setEditingTransaction(null)}>
                 Cancel
               </button>
-              <button type="submit" className="transaction-action edit">Save changes</button>
+              <button type="submit" className={`transaction-save-button ${editForm.type}`}>
+                Save
+              </button>
             </div>
           </form>
         </div>

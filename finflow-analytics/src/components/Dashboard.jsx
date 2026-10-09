@@ -23,17 +23,28 @@ function Dashboard() {
     (transaction) => transaction.type === "expense"
   ).length;
 
-  const monthlyCashFlowData = [
-    { month: "Jan 24", income: 95000, expenses: 30000 },
-    { month: "Feb 24", income: 110000, expenses: 32000 },
-    { month: "Mar 24", income: 143200, expenses: 34000 },
-    { month: "Apr 24", income: 136000, expenses: 31000 },
-  ];
+  const monthlyCashFlowByMonth = transactions.reduce((monthlyData, transaction) => {
+    const date = new Date(`${transaction.date}T00:00:00`);
+    if (Number.isNaN(date.getTime())) return monthlyData;
+
+    const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    monthlyData[monthKey] ??= {
+      month: date.toLocaleDateString("en", { month: "short", year: "2-digit" }),
+      income: 0,
+      expenses: 0,
+    };
+    monthlyData[monthKey][transaction.type === "income" ? "income" : "expenses"] += transaction.amount;
+    return monthlyData;
+  }, {});
+  const monthlyCashFlowData = Object.entries(monthlyCashFlowByMonth)
+    .sort(([leftMonth], [rightMonth]) => leftMonth.localeCompare(rightMonth))
+    .map(([, monthData]) => monthData);
 
   const chartMaxValue = Math.max(
+    0,
     ...monthlyCashFlowData.flatMap((item) => [item.income, item.expenses])
   );
-  const yAxisMax = Math.ceil((chartMaxValue * 1.2) / 10000) * 10000;
+  const yAxisMax = Math.max(10000, Math.ceil((chartMaxValue * 1.2) / 10000) * 10000);
   const yAxisTicks = [0, yAxisMax / 4, yAxisMax / 2, (yAxisMax * 3) / 4, yAxisMax];
 
   const spendingByCategory = Object.values(

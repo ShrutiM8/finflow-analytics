@@ -96,6 +96,12 @@ export function AppProvider({ children }) {
 		)
 	}
 
+	const deleteTransaction = (transactionId) => {
+		setTransactions((currentTransactions) =>
+			currentTransactions.filter((transaction) => transaction.id !== transactionId)
+		)
+	}
+
 	const income = transactions
 		.filter((transaction) => transaction.type === 'income')
 		.reduce((total, transaction) => total + transaction.amount, 0)
@@ -112,6 +118,7 @@ export function AppProvider({ children }) {
 		savingsRate,
 		transactions,
 		updateTransaction,
+		deleteTransaction,
 	}
 
 	return (
